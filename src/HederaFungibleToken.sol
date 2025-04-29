@@ -93,7 +93,7 @@ contract HederaFungibleToken is IHRC719, ERC20, Constants {
     }
 
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
-        int64 responseCode = HtsPrecompile.preTransfer(ADDRESS_ZERO, msg.sender, to, amount);
+        int64 responseCode = HtsPrecompile.preTransfer(address(0), msg.sender, to, amount);
         if (responseCode != HederaResponseCodes.SUCCESS) {
             revert HtsPrecompileError(responseCode);
         }
