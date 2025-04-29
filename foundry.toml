@@ -1,14 +1,8 @@
 [profile.default]
 src = 'src'
 out = 'out'
-libs = ['node_modules', 'lib', "dependencies"]
-test = 'test/foundry'
-cache_path  = 'forge-cache'
+libs = ['lib']
 evm_version = 'Cancun'
-remappings = [
-    '@openzeppelin/=node_modules/@openzeppelin/',
-    'hardhat/=node_modules/hardhat/',
-]
 
 [dependencies]
 
