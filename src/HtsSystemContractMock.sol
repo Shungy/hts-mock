@@ -1,16 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.9;
 
-import './system-contracts/HederaResponseCodes.sol';
-import './system-contracts/hedera-token-service/KeyHelper.sol';
-import './HederaFungibleToken.sol';
-import './base/NoDelegateCall.sol';
+import './libraries/HederaResponseCodes.sol';
+import './libraries/KeyHelper.sol';
+import './libraries/HederaTokenValidation.sol';
 import './libraries/Constants.sol';
 
+import './base/NoDelegateCall.sol';
 import './interfaces/IHtsSystemContractMock.sol';
-import './libraries/HederaTokenValidation.sol';
 
-contract HtsSystemContractMock is NoDelegateCall, KeyHelper, IHtsSystemContractMock {
+import './HederaFungibleToken.sol';
+
+contract HtsSystemContractMock is NoDelegateCall, IHtsSystemContractMock {
 
     error HtsPrecompileError(int64 responseCode);
     error NotImplemented();

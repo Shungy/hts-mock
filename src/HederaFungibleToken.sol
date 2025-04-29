@@ -3,11 +3,13 @@ pragma solidity ^0.8.9;
 
 import 'openzeppelin-contracts/token/ERC20/ERC20.sol';
 
-import './system-contracts/HederaResponseCodes.sol';
-import './system-contracts/hedera-token-service/IHederaTokenService.sol';
-import './system-contracts/hedera-token-service/IHRC719.sol';
-import './HtsSystemContractMock.sol';
 import './libraries/Constants.sol';
+import './libraries/HederaResponseCodes.sol';
+
+import './interfaces/IHederaTokenService.sol';
+import './interfaces/IHRC719.sol';
+
+import './HtsSystemContractMock.sol';
 
 contract HederaFungibleToken is IHRC719, ERC20, Constants {
     error HtsPrecompileError(int64 responseCode);
