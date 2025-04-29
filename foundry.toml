@@ -1,7 +1,7 @@
 [profile.default]
-src = 'contracts'
+src = 'src'
 out = 'out'
-libs = ['node_modules', 'lib']
+libs = ['node_modules', 'lib', "dependencies"]
 test = 'test/foundry'
 cache_path  = 'forge-cache'
 evm_version = 'Cancun'
@@ -9,5 +9,7 @@ remappings = [
     '@openzeppelin/=node_modules/@openzeppelin/',
     'hardhat/=node_modules/hardhat/',
 ]
+
+[dependencies]
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
