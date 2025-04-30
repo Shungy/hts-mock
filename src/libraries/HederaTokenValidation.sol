@@ -197,20 +197,17 @@ library HederaTokenValidation {
         address token,
         address owner,
         int64 amount,
-        int64 serialNumber,
         mapping(address => bool) storage _isFungible
     ) internal view returns (bool success, int64 responseCode) {
 
         uint256 amountU256 = uint64(amount);
-        uint256 serialNumberU256 = uint64(serialNumber);
-        return _validateTokenSufficiency(token, owner, amountU256, serialNumberU256, _isFungible);
+        return _validateTokenSufficiency(token, owner, amountU256, _isFungible);
     }
 
     function _validateTokenSufficiency(
         address token,
         address owner,
         uint256 amount,
-        uint256,
         mapping(address => bool) storage _isFungible
     ) internal view returns (bool success, int64 responseCode) {
 
@@ -251,21 +248,6 @@ library HederaTokenValidation {
         if (_isFungible[token]) {
             return _validateFungibleApproval(token, spender, from, amountOrSerialNumber, _isFungible);
         }
-    }
-
-    function _validBurnInput(
-        address token,
-        mapping(address => bool) storage _isFungible,
-        int64,
-        int64[] memory serialNumbers
-    ) internal view returns (bool success, int64 responseCode) {
-
-        if (_isFungible[token] && serialNumbers.length > 0) {
-            return (false, HederaResponseCodes.INVALID_TOKEN_ID);
-        }
-
-        success = true;
-        responseCode = HederaResponseCodes.SUCCESS;
     }
 
     function _validateTokenAssociation(

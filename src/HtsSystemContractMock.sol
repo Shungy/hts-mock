@@ -349,14 +349,13 @@ contract HtsSystemContractMock is NoDelegateCall, IHtsSystemContractMock {
     // TODO: implement multiple NFTs being burnt instead of just index 0
     function _precheckBurn(
         address token,
-        int64 amount,
-        int64[] memory serialNumbers // since only 1 NFT can be burnt at a time; expect length to be 1
+        int64 amount
     ) internal view returns (bool success, int64 responseCode) {
         success = true;
 
         (success, responseCode) = success ? HederaTokenValidation._validateToken(token, _tokenDeleted, _isFungible) : (success, responseCode);
         (success, responseCode) = success ? _validateTreasuryKey(token) : (success, responseCode);
-        (success, responseCode) = success ? HederaTokenValidation._validateTokenSufficiency(token, _getTreasuryAccount(token), amount, serialNumbers[0], _isFungible) : (success, responseCode);
+        (success, responseCode) = success ? HederaTokenValidation._validateTokenSufficiency(token, _getTreasuryAccount(token), amount, _isFungible) : (success, responseCode);
     }
 
     // TODO: implement multiple NFTs being wiped, instead of just index 0
@@ -364,14 +363,12 @@ contract HtsSystemContractMock is NoDelegateCall, IHtsSystemContractMock {
         address,
         address token,
         address account,
-        int64 amount,
-        int64[] memory serialNumbers // since only 1 NFT can be wiped at a time; expect length to be 1
+        int64 amount
     ) internal view returns (bool success, int64 responseCode) {
         success = true;
         (success, responseCode) = success ? HederaTokenValidation._validateToken(token, _tokenDeleted, _isFungible) : (success, responseCode);
-        (success, responseCode) = success ? HederaTokenValidation._validBurnInput(token, _isFungible, amount, serialNumbers) : (success, responseCode);
         (success, responseCode) = success ? _validateWipeKey(token) : (success, responseCode);
-        (success, responseCode) = success ? HederaTokenValidation._validateTokenSufficiency(token, account, amount, serialNumbers[0], _isFungible) : (success, responseCode);
+        (success, responseCode) = success ? HederaTokenValidation._validateTokenSufficiency(token, account, amount, _isFungible) : (success, responseCode);
     }
 
     function _precheckGetFungibleTokenInfo(address token) internal view returns (bool success, int64 responseCode) {
@@ -493,7 +490,7 @@ contract HtsSystemContractMock is NoDelegateCall, IHtsSystemContractMock {
         bool shouldAssumeRequestFromOwner = spender == address(0);
         isRequestFromOwner = _isAccountSender(from) || shouldAssumeRequestFromOwner;
 
-        (success, responseCode) = success ? HederaTokenValidation._validateTokenSufficiency(token, from, amountOrSerialNumber, amountOrSerialNumber, _isFungible) : (success, responseCode);
+        (success, responseCode) = success ? HederaTokenValidation._validateTokenSufficiency(token, from, amountOrSerialNumber, _isFungible) : (success, responseCode);
 
         if (isRequestFromOwner || !success) {
             return (success, responseCode, isRequestFromOwner);
@@ -877,10 +874,10 @@ contract HtsSystemContractMock is NoDelegateCall, IHtsSystemContractMock {
     function burnToken(
         address token,
         int64 amount,
-        int64[] memory serialNumbers
+        int64[] memory
     ) external noDelegateCall returns (int64 responseCode, int64 newTotalSupply) {
         bool success;
-        (success, responseCode) = _precheckBurn(token, amount, serialNumbers);
+        (success, responseCode) = _precheckBurn(token, amount);
 
         if (!success) {
             return (responseCode, 0);
@@ -979,11 +976,8 @@ contract HtsSystemContractMock is NoDelegateCall, IHtsSystemContractMock {
         address account,
         int64 amount
     ) external noDelegateCall returns (int64 responseCode) {
-
-        int64[] memory nullArray;
-
         bool success;
-        (success, responseCode) = _precheckWipe(msg.sender, token, account, amount, nullArray);
+        (success, responseCode) = _precheckWipe(msg.sender, token, account, amount);
 
         if (!success) {
             return responseCode;
