@@ -58,3 +58,6 @@ test/state-registry/states.json
 test/state-registry/ercStates.json
 
 coverage.json
+
+#Dependencies
+dependencies/
